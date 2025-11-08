@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  # MQTT Broker
+  mosquitto:
+    image: eclipse-mosquitto:2.0
+    container_name: healthsense-mosquitto
+    ports:
+      - "1883:1883"    # MQTT
+      - "9001:9001"    # WebSocket
+    volumes:
+      - ./ops/mosquitto/config:/mosquitto/config
+      - ./ops/mosquitto/data:/mosquitto/data
+      - ./ops/mosquitto/log:/mosquitto/log
+    restart: unless-stopped
+
+  # Redis (for caching latest data)
+  redis:
+    image: redis:7-alpine
+    container_name: healthsense-redis
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+
+  # Local DynamoDB (for development)
+  dynamodb-local:
+    image: amazon/dynamodb-local:latest
+    container_name: healthsense-dynamodb
+    ports:
+      - "8000:8000"
+    command: "-jar DynamoDBLocal.jar -sharedDb -dbPath ./data"
+    volumes:
+      - ./ops/dynamodb-data:/home/dynamodblocal/data
+    restart: unless-stopped
+
+  # TimescaleDB (optional - for local SQL testing)
+  timescaledb:
+    image: timescale/timescaledb:latest-pg15
+    container_name: healthsense-timescaledb
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: healthsense
+      POSTGRES_PASSWORD: dev_password
+      POSTGRES_DB: healthsense
+    volumes:
+      - timescale-data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  timescale-data:
