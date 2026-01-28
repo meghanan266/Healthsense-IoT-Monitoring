@@ -1,12 +1,5 @@
 # HealthSense - Real-Time IoT Health Monitoring Platform
 
-**Author:** MEGHANA NARAYANA
-**Course:** CS-6650 Building Scalable Distributed Systems  
-**Institution:** Northeastern University  
-**Date:** December 2025
-
----
-
 ## 🚨 The Problem
 
 Healthcare providers face a critical challenge: **delayed detection of patient health emergencies**. Traditional monitoring systems check vitals every 4-6 hours, creating dangerous gaps where:
@@ -353,7 +346,6 @@ locust -f locustfile.py --host=http://localhost:8080
 
 ## 📊 Project Stats
 
-- **Lines of Code:** 5,000+
 - **Test Messages:** 19,593
 - **AWS Services Used:** 7 (IoT Core, Kinesis, Lambda, DynamoDB, SNS, CloudWatch, IAM)
 - **Docker Containers:** 4 (Mosquitto, Redis, DynamoDB Local, TimescaleDB)
